@@ -1,3 +1,32 @@
+
+<?php
+
+$textID=(isset($_POST["textID"]))?$_POST["textID"]:"";
+$textNombre=(isset($_POST["textNombre"]))?$_POST["textNombre"]:"";
+$textApellidoPat=(isset($_POST["textApellidoPat"]))?$_POST["textApellidoPat"]:"";
+$textApellidoMat=(isset($_POST["textApellidoMat"]))?$_POST["textApellidoMat"]:"";
+$textCorreo=(isset($_POST["textCorreo"]))?$_POST["textCorreo"]:"";
+$textIMG=(isset($_POST["textIMG"]))?$_POST["textIMG"]:"";
+
+$accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
+
+switch ($accion) {
+  case 'btnAgregar':
+      echo "Presionaste Agregar";
+    break;
+  case 'btnEditar':
+      echo "Presionaste Editar";
+    break;
+  case 'btnEliminar':
+      echo "Presionaste Eliminar";
+    break;
+  case 'btnCancelar':
+      echo "Presionaste Cancelar";
+    break;
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +44,8 @@
 </head>
 <body>
   <div class="container">
-    <form class="" action="index.html" method="post" enctype="multipart/form-data">
+
+    <form class="" action="" method="post" enctype="multipart/form-data">
 
       <label for="">ID:</label>
       <input type="text" name="textID" placeholder="" id="textID" require="">
