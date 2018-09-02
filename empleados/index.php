@@ -10,9 +10,23 @@ $textIMG=(isset($_POST["textIMG"]))?$_POST["textIMG"]:"";
 
 $accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
 
-switch ($accion) {
-  case 'btnAgregar':
-      echo "Presionaste Agregar";
+include ("../conexion/conexion.php");
+
+switch ($accion){
+  case "btnAgregar":
+        echo $textID;
+        echo "Presionaste Agregar";
+
+        $sentencia = $conn->prepare ("INSERT INTO empleados (Nombre, ApellidoPat, ApellidoMat, Correo, Fotografia)
+        VALUES (:Nombre,:ApellidoPat,:ApellidoMat,:Correo,:Fotografia)");
+
+        $sentencia->bindParam(":Nombre", $textNombre);
+        $sentencia->bindParam(":ApellidoPat",$textApellidoPat);
+        $sentencia->bindParam(":ApellidoMat",$textApellidoMat);
+        $sentencia->bindParam(":Correo",$textCorreo);
+        $sentencia->bindParam(":Fotografia",$textIMG);
+        $sentencia->execute();
+
     break;
   case 'btnEditar':
       echo "Presionaste Editar";
