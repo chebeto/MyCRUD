@@ -37,8 +37,17 @@ switch ($accion){
   case 'btnCancelar':
       echo "Presionaste Cancelar";
     break;
-
 }
+
+
+//Se selecciona todos los datos de la tabla empleados
+    $lista = $conn->prepare("SELECT * FROM `empleados` WHERE 1");
+    $lista->execute();
+//Se recogen todos los datos
+    $listaEmpleados = $lista->FetchAll(PDO::FETCH_ASSOC);
+//Se imprimen en pantalla
+    print_r($listaEmpleados);
+
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +99,32 @@ switch ($accion){
       <button class="btn btn-danger" value="btnEliminar" type="submit" name="accion">Eliminar</button>
       <button class="btn btn-warning" value="btnCancelar" type="submit" name="accion">Cancelar</button>
     </form>
+
+
+  <!-- Se crea la tabla para muestra de informacion -->
+    <div class="row">
+      <table>
+        <thead>
+          <tr>
+            <th>Fotografia</th>
+            <th>Nombre Completo</th>
+            <th>Correo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <?php foreach ($listaEmpleados as $empleados) {
+          ?>
+          <tr>
+            <td><?php echo $empleados["Fotografia"]; ?></td>
+            <td><?php echo $empleados["Nombre"]; ?> <?php echo $empleados["ApellidoPat"]; ?> <?php echo $empleados["ApellidoMat"]; ?></td>
+            <td><?php echo $empleados["Correo"]; ?></td>
+            <td><button type="input" value="Seleccionar" class="btn btn-outline-success" name="Accion">Seleccionar</button> </td>
+          </tr>
+          <?php
+        } ?>
+      </table>
+    </div>
+
 
   </div>
 </body>
