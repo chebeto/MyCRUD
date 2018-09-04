@@ -22,6 +22,10 @@ switch ($accion){
         $sentencia->bindParam(":ApellidoMat",$textApellidoMat);
         $sentencia->bindParam(":Correo",$textCorreo);
 
+// Se inserta la fecha y hora de subida del archivo para evitar duplicidad
+// en archivos cuando varios usuarios suban un mismo nombre de archivos
+// En caso de que el usuario no suba ninguna foto, se elegira USER.PNG
+// para que sea su imagen default
         $Fecha= new DateTime();
         $nombreArchivo=($textIMG!="")?$Fecha->getTimestamp()."_".$_FILES["textIMG"]["name"]:"user.png";
         $tmpFoto=$_FILES["textIMG"]["tmp_name"];
@@ -39,17 +43,33 @@ switch ($accion){
         Nombre=:Nombre,
         ApellidoPat=:ApellidoPat,
         ApellidoMat=:ApellidoMat,
-        Correo=:Correo,
-        Fotografia=:Fotografia WHERE
-        Id=:Id");
+        Correo=:Correo WHERE Id=:Id");
 
         $sentencia->bindParam(":Nombre", $textNombre);
         $sentencia->bindParam(":ApellidoPat",$textApellidoPat);
         $sentencia->bindParam(":ApellidoMat",$textApellidoMat);
         $sentencia->bindParam(":Correo",$textCorreo);
-        $sentencia->bindParam(":Fotografia",$textIMG);
+
         $sentencia->bindParam(":Id",$textID);
         $sentencia->execute();
+
+        $Fecha= new DateTime();
+        $nombreArchivo=($textIMG!="")?$Fecha->getTimestamp()."_".$_FILES["textIMG"]["name"]:"user.png";
+        $tmpFoto=$_FILES["textIMG"]["tmp_name"];
+
+        if ($tmpFoto!="") {
+          move_uploaded_file($tmpFoto,"../imgs/".$nombreArchivo);
+
+          $sentencia = $conn->prepare ("UPDATE empleados SET
+          Fotografia=:Fotografia WHERE Id=:Id");
+          $sentencia->bindParam(":Fotografia",$nombreArchivo);
+          $sentencia->bindParam(":Id",$textID);
+          $sentencia->execute();
+        }
+
+
+
+
 
         header("Location: index.php");
     break;
