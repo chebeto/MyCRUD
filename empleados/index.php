@@ -1,14 +1,14 @@
 
 <?php
 
-$textID=(isset($_POST["textID"]))?$_POST["textID"]:"";
-$textNombre=(isset($_POST["textNombre"]))?$_POST["textNombre"]:"";
-$textApellidoPat=(isset($_POST["textApellidoPat"]))?$_POST["textApellidoPat"]:"";
-$textApellidoMat=(isset($_POST["textApellidoMat"]))?$_POST["textApellidoMat"]:"";
-$textCorreo=(isset($_POST["textCorreo"]))?$_POST["textCorreo"]:"";
-$textIMG=(isset($_POST["textIMG"]))?$_POST["textIMG"]:"";
+      $textID=(isset($_POST["textID"]))?$_POST["textID"]:"";
+      $textNombre=(isset($_POST["textNombre"]))?$_POST["textNombre"]:"";
+      $textApellidoPat=(isset($_POST["textApellidoPat"]))?$_POST["textApellidoPat"]:"";
+      $textApellidoMat=(isset($_POST["textApellidoMat"]))?$_POST["textApellidoMat"]:"";
+      $textCorreo=(isset($_POST["textCorreo"]))?$_POST["textCorreo"]:"";
+      $textIMG=(isset($_FILES["textIMG"]["name"]))?$_FILES["textIMG"]["name"]:"";
 
-$accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
+      $accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
 
 include ("../conexion/conexion.php");
 
@@ -21,8 +21,18 @@ switch ($accion){
         $sentencia->bindParam(":ApellidoPat",$textApellidoPat);
         $sentencia->bindParam(":ApellidoMat",$textApellidoMat);
         $sentencia->bindParam(":Correo",$textCorreo);
-        $sentencia->bindParam(":Fotografia",$textIMG);
+
+        $Fecha= new DateTime();
+        $nombreArchivo =($textIMG!="")?$Fecha->getTimestamp()."_".$_FILES["textIMG"]["name"]:"user.png";
+        $tempFoto=["textIMG"]["temp_name"];
+        if ($tempFoto!="") {
+          move_uploaded_file($tempFoto,"../imgs/".$nombreArchivo);
+        }
+
+        $sentencia->bindParam(":Fotografia",$nombreArchivo);
         $sentencia->execute();
+
+        header("Location: index.php");
     break;
 
   case 'btnEditar':
@@ -111,7 +121,7 @@ switch ($accion){
       <br>
 
       <label for="">Imagen:</label>
-      <input type="text" name="textIMG" value="<?php echo $textIMG; ?>" placeholder="" id="textIMG" require="">
+      <input type="file" accept="image/*" class="form-control-file" name="textIMG" value="<?php echo $textIMG; ?>" placeholder="" id="textIMG" require="">
       <br>
 
       <button class="btn btn-success" value="btnAgregar" type="submit" name="accion">Agregar</button>
@@ -135,7 +145,7 @@ switch ($accion){
         <?php foreach ($listaEmpleados as $empleados) {
           ?>
           <tr>
-            <td><?php echo $empleados["Fotografia"]; ?></td>
+            <td><img class="img-thumbnail" width="100px" src="../imgs/<?php echo $empleados["Fotografia"]; ?>" /></td>
             <td><?php echo $empleados["Nombre"]; ?> <?php echo $empleados["ApellidoPat"]; ?> <?php echo $empleados["ApellidoMat"]; ?></td>
             <td><?php echo $empleados["Correo"]; ?></td>
             <td>
