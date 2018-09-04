@@ -14,9 +14,6 @@ include ("../conexion/conexion.php");
 
 switch ($accion){
   case "btnAgregar":
-        echo $textID;
-        echo "Presionaste Agregar";
-
         $sentencia = $conn->prepare ("INSERT INTO empleados (Nombre, ApellidoPat, ApellidoMat, Correo, Fotografia)
         VALUES (:Nombre,:ApellidoPat,:ApellidoMat,:Correo,:Fotografia)");
 
@@ -26,15 +23,31 @@ switch ($accion){
         $sentencia->bindParam(":Correo",$textCorreo);
         $sentencia->bindParam(":Fotografia",$textIMG);
         $sentencia->execute();
-
     break;
+
   case 'btnEditar':
-      echo "Presionaste Editar";
+        $sentencia = $conn->prepare ("UPDATE empleados SET
+        Nombre=:Nombre,
+        ApellidoPat=:ApellidoPat,
+        ApellidoMat=:ApellidoMat,
+        Correo=:Correo,
+        Fotografia=:Fotografia WHERE
+        Id=:Id");
+
+        $sentencia->bindParam(":Nombre", $textNombre);
+        $sentencia->bindParam(":ApellidoPat",$textApellidoPat);
+        $sentencia->bindParam(":ApellidoMat",$textApellidoMat);
+        $sentencia->bindParam(":Correo",$textCorreo);
+        $sentencia->bindParam(":Fotografia",$textIMG);
+        $sentencia->bindParam(":Id",$textID);
+        $sentencia->execute();
     break;
   case 'btnEliminar':
+      echo $textID;
       echo "Presionaste Eliminar";
     break;
   case 'btnCancelar':
+      echo $textID;
       echo "Presionaste Cancelar";
     break;
 }
