@@ -118,7 +118,19 @@ switch ($accion){
             <td><?php echo $empleados["Fotografia"]; ?></td>
             <td><?php echo $empleados["Nombre"]; ?> <?php echo $empleados["ApellidoPat"]; ?> <?php echo $empleados["ApellidoMat"]; ?></td>
             <td><?php echo $empleados["Correo"]; ?></td>
-            <td><button type="input" value="Seleccionar" class="btn btn-outline-success" name="Accion">Seleccionar</button> </td>
+            <td>
+              <form action="" method="post">
+                <input type="hidden" name="textID" value="<?php echo $empleados["ID"]; ?>">
+                <input type="hidden" name="textNombre" value="<?php echo $empleados["Nombre"]; ?>">
+                <input type="hidden" name="textApellidoPat" value="<?php echo $empleados["ApellidoPat"]; ?>">
+                <input type="hidden" name="textApellidoMat" value="<?php echo $empleados["ApellidoMat"]; ?>">
+                <input type="hidden" name="textCorreo" value="<?php echo $empleados["Correo"]; ?>">
+                <input type="hidden" name="textIMG" value="<?php echo $empleados["Fotografia"]; ?>">
+
+
+                <input type="submit" name="accion" value="Seleccionar" class="btn btn-outline-success">
+              </form>
+            </td>
           </tr>
           <?php
         } ?>
