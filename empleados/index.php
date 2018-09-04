@@ -23,12 +23,11 @@ switch ($accion){
         $sentencia->bindParam(":Correo",$textCorreo);
 
         $Fecha= new DateTime();
-        $nombreArchivo =($textIMG!="")?$Fecha->getTimestamp()."_".$_FILES["textIMG"]["name"]:"user.png";
-        $tempFoto=["textIMG"]["temp_name"];
-        if ($tempFoto!="") {
-          move_uploaded_file($tempFoto,"../imgs/".$nombreArchivo);
+        $nombreArchivo=($textIMG!="")?$Fecha->getTimestamp()."_".$_FILES["textIMG"]["name"]:"user.png";
+        $tmpFoto=$_FILES["textIMG"]["tmp_name"];
+        if ($tmpFoto!="") {
+          move_uploaded_file($tmpFoto,"../imgs/".$nombreArchivo);
         }
-
         $sentencia->bindParam(":Fotografia",$nombreArchivo);
         $sentencia->execute();
 
