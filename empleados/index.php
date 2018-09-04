@@ -71,27 +71,27 @@ switch ($accion){
     <form class="" action="" method="post" enctype="multipart/form-data">
 
       <label for="">ID:</label>
-      <input type="text" name="textID" placeholder="" id="textID" require="">
+      <input type="text" name="textID" value="<?php echo $textID; ?>" placeholder="" id="textID" require="">
       <br>
 
       <label for="">Nombre:</label>
-      <input type="text" name="textNombre" placeholder="" id="textNombre" require="">
+      <input type="text" name="textNombre" value="<?php echo $textNombre; ?>" placeholder="" id="textNombre" require="">
       <br>
 
       <label for="">Apellido Paterno:</label>
-      <input type="text" name="textApellidoPat" placeholder="" id="textApellidoPat" require="">
+      <input type="text" name="textApellidoPat" value="<?php echo $textApellidoPat; ?>" placeholder="" id="textApellidoPat" require="">
       <br>
 
       <label for="">Apellido Materno:</label>
-      <input type="text" name="textApellidoMat" placeholder="" id="textApellidoMat" require="">
+      <input type="text" name="textApellidoMat" value="<?php echo $textApellidoMat; ?>" placeholder="" id="textApellidoMat" require="">
       <br>
 
       <label for="">Correo:</label>
-      <input type="text" name="textCorreo" placeholder="" id="textCorreo" require="">
+      <input type="text" name="textCorreo" value="<?php echo $textCorreo; ?>" placeholder="" id="textCorreo" require="">
       <br>
 
       <label for="">Imagen:</label>
-      <input type="text" name="textIMG" placeholder="" id="textIMG" require="">
+      <input type="text" name="textIMG" value="<?php echo $textIMG; ?>" placeholder="" id="textIMG" require="">
       <br>
 
       <button class="btn btn-success" value="btnAgregar" type="submit" name="accion">Agregar</button>
@@ -128,7 +128,7 @@ switch ($accion){
                 <input type="hidden" name="textIMG" value="<?php echo $empleados["Fotografia"]; ?>">
 
 
-                <input type="submit" name="accion" value="Seleccionar" class="btn btn-outline-success">
+                <input type="submit"  value="Seleccionar" name="accion" class="btn btn-outline-primary">
               </form>
             </td>
           </tr>
