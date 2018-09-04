@@ -41,11 +41,18 @@ switch ($accion){
         $sentencia->bindParam(":Fotografia",$textIMG);
         $sentencia->bindParam(":Id",$textID);
         $sentencia->execute();
+
+        header("Location: index.php");
     break;
+
   case 'btnEliminar':
-      echo $textID;
-      echo "Presionaste Eliminar";
+        $sentencia = $conn->prepare ("DELETE FROM empleados WHERE Id=:Id");
+        $sentencia->bindParam(":Id",$textID);
+        $sentencia->execute();
+
+        header("Location: index.php");
     break;
+
   case 'btnCancelar':
       echo $textID;
       echo "Presionaste Cancelar";
@@ -59,7 +66,7 @@ switch ($accion){
 //Se recogen todos los datos
     $listaEmpleados = $lista->FetchAll(PDO::FETCH_ASSOC);
 //Se imprimen en pantalla
-    print_r($listaEmpleados);
+//    print_r($listaEmpleados);
 
 ?>
 
@@ -116,7 +123,7 @@ switch ($accion){
 
   <!-- Se crea la tabla para muestra de informacion -->
     <div class="row">
-      <table>
+      <table class="table">
         <thead>
           <tr>
             <th>Fotografia</th>
@@ -142,6 +149,7 @@ switch ($accion){
 
 
                 <input type="submit"  value="Seleccionar" name="accion" class="btn btn-outline-primary">
+                <button class="btn btn-outline-danger" value="btnEliminar" type="submit" name="accion">Eliminar</button>
               </form>
             </td>
           </tr>
