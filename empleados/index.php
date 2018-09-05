@@ -67,19 +67,30 @@ switch ($accion){
           $sentencia->execute();
         }
 
-
-
-
-
         header("Location: index.php");
     break;
 
   case 'btnEliminar':
+        $sentencia = $conn->prepare ("SELECT Fotografia FROM empleados WHERE Id=:Id");
+        $sentencia->bindParam(":Id",$textID);
+        $sentencia->execute();
+        $empleados=$sentencia->fetch(PDO::FETCH_LAZY);
+        print_r($empleados);
+          /*
+          Busca la fotografia del usuario y realiza el borrado del archivo dentro de la carpeta
+          */
+        if (isset($empleados["Fotografia"])) {
+          if (file_exists("../imgs/".$empleados["Fotografia"])) {
+            unlink("../imgs/".$empleados["Fotografia"]);
+          }
+        }
+
         $sentencia = $conn->prepare ("DELETE FROM empleados WHERE Id=:Id");
         $sentencia->bindParam(":Id",$textID);
         $sentencia->execute();
-
         header("Location: index.php");
+      
+
     break;
 
   case 'btnCancelar':
