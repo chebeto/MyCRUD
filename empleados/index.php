@@ -60,6 +60,25 @@ switch ($accion){
         if ($tmpFoto!="") {
           move_uploaded_file($tmpFoto,"../imgs/".$nombreArchivo);
 
+          /*
+          Realiza el Select de la foto del usuario en base al ID elegido
+          */
+        $sentencia = $conn->prepare ("SELECT Fotografia FROM empleados WHERE Id=:Id");
+        $sentencia->bindParam(":Id",$textID);
+        $sentencia->execute();
+        $empleados=$sentencia->fetch(PDO::FETCH_LAZY);
+        print_r($empleados);
+          /*
+          Realiza el borrado del archivo dentro de la carpeta de IMGS
+          */
+        if (isset($empleados["Fotografia"])) {
+          if (file_exists("../imgs/".$empleados["Fotografia"])) {
+            unlink("../imgs/".$empleados["Fotografia"]);
+          }
+        }
+        /*
+        Realiza el update del archivo dentro de la carpeta de IMGS
+        */
           $sentencia = $conn->prepare ("UPDATE empleados SET
           Fotografia=:Fotografia WHERE Id=:Id");
           $sentencia->bindParam(":Fotografia",$nombreArchivo);
@@ -71,13 +90,16 @@ switch ($accion){
     break;
 
   case 'btnEliminar':
+          /*
+          Realiza el Select de la foto del usuario en base al ID elegido
+          */
         $sentencia = $conn->prepare ("SELECT Fotografia FROM empleados WHERE Id=:Id");
         $sentencia->bindParam(":Id",$textID);
         $sentencia->execute();
         $empleados=$sentencia->fetch(PDO::FETCH_LAZY);
         print_r($empleados);
           /*
-          Busca la fotografia del usuario y realiza el borrado del archivo dentro de la carpeta
+          Realiza el borrado del archivo dentro de la carpeta de IMGS
           */
         if (isset($empleados["Fotografia"])) {
           if (file_exists("../imgs/".$empleados["Fotografia"])) {
@@ -89,7 +111,7 @@ switch ($accion){
         $sentencia->bindParam(":Id",$textID);
         $sentencia->execute();
         header("Location: index.php");
-      
+
 
     break;
 
@@ -130,24 +152,22 @@ switch ($accion){
 
     <form class="" action="" method="post" enctype="multipart/form-data">
 
-      <label for="">ID:</label>
-      <input type="text" name="textID" value="<?php echo $textID; ?>" placeholder="" id="textID" require="">
-      <br>
+      <input type="hidden" name="textID" value="<?php echo $textID; ?>" placeholder="" id="textID" require="">
 
       <label for="">Nombre:</label>
-      <input type="text" name="textNombre" value="<?php echo $textNombre; ?>" placeholder="" id="textNombre" require="">
+      <input type="text" name="textNombre" required value="<?php echo $textNombre; ?>" placeholder="" id="textNombre" require="">
       <br>
 
       <label for="">Apellido Paterno:</label>
-      <input type="text" name="textApellidoPat" value="<?php echo $textApellidoPat; ?>" placeholder="" id="textApellidoPat" require="">
+      <input type="text" name="textApellidoPat" required value="<?php echo $textApellidoPat; ?>" placeholder="" id="textApellidoPat" require="">
       <br>
 
       <label for="">Apellido Materno:</label>
-      <input type="text" name="textApellidoMat" value="<?php echo $textApellidoMat; ?>" placeholder="" id="textApellidoMat" require="">
+      <input type="text" name="textApellidoMat" required value="<?php echo $textApellidoMat; ?>" placeholder="" id="textApellidoMat" require="">
       <br>
 
       <label for="">Correo:</label>
-      <input type="text" name="textCorreo" value="<?php echo $textCorreo; ?>" placeholder="" id="textCorreo" require="">
+      <input type="email" name="textCorreo" required value="<?php echo $textCorreo; ?>" placeholder="" id="textCorreo" require="">
       <br>
 
       <label for="">Imagen:</label>
