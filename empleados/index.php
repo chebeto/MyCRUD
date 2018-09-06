@@ -10,6 +10,10 @@
 
       $accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
 
+      $accionAgregar="";
+      $accionModificar=$accionEliminar=$accionCancelar="disabled";
+      $mostrarModal=false;
+
 include ("../conexion/conexion.php");
 
 switch ($accion){
@@ -73,7 +77,9 @@ switch ($accion){
           */
         if (isset($empleados["Fotografia"])) {
           if (file_exists("../imgs/".$empleados["Fotografia"])) {
-            unlink("../imgs/".$empleados["Fotografia"]);
+            if ($item["Fotografia"]!="user.png") {
+              unlink("../imgs/".$empleados["Fotografia"]);
+            }
           }
         }
         /*
@@ -101,7 +107,7 @@ switch ($accion){
           /*
           Realiza el borrado del archivo dentro de la carpeta de IMGS
           */
-        if (isset($empleados["Fotografia"])) {
+        if (isset($empleados["Fotografia"])&&($item["Fotografia"]!="user.png")) {
           if (file_exists("../imgs/".$empleados["Fotografia"])) {
             unlink("../imgs/".$empleados["Fotografia"]);
           }
@@ -112,12 +118,16 @@ switch ($accion){
         $sentencia->execute();
         header("Location: index.php");
 
-
     break;
 
   case 'btnCancelar':
-      echo $textID;
-      echo "Presionaste Cancelar";
+      header("Location: index.php");
+    break;
+
+  case "Seleccionar":
+      $accionAgregar="disabled";
+      $accionModificar=$accionEliminar=$accionCancelar="";
+      $mostrarModal=true;
     break;
 }
 
@@ -188,10 +198,10 @@ switch ($accion){
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-success" value="btnAgregar" type="submit" name="accion">Agregar</button>
-            <button class="btn btn-warning" value="btnEditar" type="submit" name="accion">Editar</button>
-            <button class="btn btn-danger" value="btnEliminar" type="submit" name="accion">Eliminar</button>
-            <button class="btn btn-primary" value="btnCancelar" type="submit" name="accion">Cancelar</button>
+            <button class="btn btn-success" <?php echo $accionAgregar ?> value="btnAgregar" type="submit" name="accion">Agregar</button>
+            <button class="btn btn-warning" <?php echo $accionModificar ?> value="btnEditar" type="submit" name="accion">Editar</button>
+            <button class="btn btn-danger" <?php echo $accionEliminar ?> value="btnEliminar" type="submit" name="accion">Eliminar</button>
+            <button class="btn btn-primary" <?php echo $accionCancelar ?> value="btnCancelar" type="submit" name="accion">Cancelar</button>
           </div>
         </div>
       </div>
@@ -241,7 +251,11 @@ switch ($accion){
         } ?>
       </table>
     </div>
-
+  <?php if ($mostrarModal) {?>
+    <script>
+      $("#exampleModal").modal("show");  
+    </script>
+  <?php }?>
 
   </div>
 </body>
