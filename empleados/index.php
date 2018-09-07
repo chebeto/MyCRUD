@@ -1,6 +1,4 @@
-
 <?php
-
       $textID=(isset($_POST["textID"]))?$_POST["textID"]:"";
       $textNombre=(isset($_POST["textNombre"]))?$_POST["textNombre"]:"";
       $textApellidoPat=(isset($_POST["textApellidoPat"]))?$_POST["textApellidoPat"]:"";
@@ -10,7 +8,7 @@
 
       $accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
 
-      $accionAgregar="";
+      $accionAgregar=" ";
       $accionModificar=$accionEliminar=$accionCancelar="disabled";
       $mostrarModal=false;
 
@@ -126,7 +124,7 @@ switch ($accion){
 
   case "Seleccionar":
       $accionAgregar="disabled";
-      $accionModificar=$accionEliminar=$accionCancelar="";
+      $accionModificar=$accionEliminar=$accionCancelar=" ";
       $mostrarModal=true;
 
       $sentencia = $conn->prepare ("SELECT * FROM empleados WHERE Id=:Id");
@@ -138,7 +136,7 @@ switch ($accion){
       $textApellidoPat=$empleados["ApellidoPat"];
       $textApellidoMat=$empleados["ApellidoMat"];
       $textCorreo=$empleados["Correo"];
-      $textImg=$empleados["Fotografia"];
+      $textIMG=$empleados["Fotografia"];
     break;
 }
 
@@ -187,33 +185,43 @@ switch ($accion){
             <div class="form-row">
               <input type="hidden" name="textID" value="<?php echo $textID; ?>" placeholder="" id="textID" require="">
 
+              <div class="form-group col-md-12">
               <label for="">Nombre(s):</label>
               <input type="text" class="form-control" name="textNombre" required value="<?php echo $textNombre; ?>" placeholder="" id="textNombre" require="">
               <br>
+              </div>
 
+              <div class="form-group col-md-6">
               <label for="">Apellido Paterno:</label>
               <input type="text" class="form-control" name="textApellidoPat" required value="<?php echo $textApellidoPat; ?>" placeholder="" id="textApellidoPat" require="">
               <br>
+              </div>
 
+              <div class="form-group col-md-6">
               <label for="">Apellido Materno:</label>
               <input type="text" class="form-control" name="textApellidoMat" required value="<?php echo $textApellidoMat; ?>" placeholder="" id="textApellidoMat" require="">
               <br>
+              </div>
 
+              <div class="form-group col-md-12">
               <label for="">Correo:</label>
               <input type="email" class="form-control" name="textCorreo" required value="<?php echo $textCorreo; ?>" placeholder="" id="textCorreo" require="">
               <br>
+              </div>
 
+              <div class="form-group col-md-12">
               <label for="">Imagen:</label>
               <?php if ($textIMG!=""){?>
-              <br>
-              <img class="img-thumbnail rounded mx-auto d-block" width="100px" src="../imgs/<?php echo $textIMG; ?>"/>
-              <br>
+              <br />
+              <img class="img-thumbnail rounded mx-auto d-block" width="150px" src="../imgs/<?php echo $textIMG; ?>"/>
+              <br/>
+              <br/>
               <?php }?>
-
+              </div>
 
               <input type="file" class="form-control" accept="image/*" class="form-control-file" name="textIMG" value="<?php echo $textIMG; ?>" placeholder="" id="textIMG" require="">
               <br>
-            </div>
+              </div>
           </div>
           <div class="modal-footer">
             <button class="btn btn-success" <?php echo $accionAgregar ?> value="btnAgregar" type="submit" name="accion">Agregar</button>
