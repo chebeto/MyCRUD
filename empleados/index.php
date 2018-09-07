@@ -8,6 +8,8 @@
 
       $accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
 
+      $error=array();
+
       $accionAgregar=" ";
       $accionModificar=$accionEliminar=$accionCancelar="disabled";
       $mostrarModal=false;
@@ -16,6 +18,25 @@ include ("../conexion/conexion.php");
 
 switch ($accion){
   case "btnAgregar":
+
+        if ($textNombre=="") {
+          $error["textNombre"]="Escribe el nombre";
+        }
+        if ($textApellidoPat=="") {
+          $error["textApellidoPat"]="Escribe el apellido paterno";
+        }
+        if ($textApellidoMat=="") {
+          $error["textApellidoMat"]="Escribe el apellido materno";
+        }
+        if ($textCorreo=="") {
+          $error["textCorreo"]="Escribe el correo electronico";
+        }
+
+        if (count($error)>0) {
+          $mostrarModal=true;
+          break;
+        }
+
         $sentencia = $conn->prepare ("INSERT INTO empleados (Nombre, ApellidoPat, ApellidoMat, Correo, Fotografia)
         VALUES (:Nombre,:ApellidoPat,:ApellidoMat,:Correo,:Fotografia)");
 
@@ -187,25 +208,37 @@ switch ($accion){
 
               <div class="form-group col-md-12">
               <label for="">Nombre(s):</label>
-              <input type="text" class="form-control" name="textNombre" required value="<?php echo $textNombre; ?>" placeholder="" id="textNombre" require="">
+              <input type="text" class="form-control <?php echo (isset($error["textNombre"]))?"is-invalid":"";?>" name="textNombre"  value="<?php echo $textNombre; ?>" placeholder="" id="textNombre" require="">
+              <div class="invalid-feedback">
+                <?php echo (isset($error["textNombre"]))?$error["textNombre"]:"";?>
+              </div>
               <br>
               </div>
 
               <div class="form-group col-md-6">
               <label for="">Apellido Paterno:</label>
-              <input type="text" class="form-control" name="textApellidoPat" required value="<?php echo $textApellidoPat; ?>" placeholder="" id="textApellidoPat" require="">
+              <input type="text" class="form-control <?php echo (isset($error["textApellidoPat"]))?"is-invalid":"";?>" name="textApellidoPat"  value="<?php echo $textApellidoPat; ?>" placeholder="" id="textApellidoPat" require="">
+              <div class="invalid-feedback">
+                <?php echo (isset($error["textApellidoPat"]))?$error["textApellidoPat"]:"";?>
+              </div>
               <br>
               </div>
 
               <div class="form-group col-md-6">
               <label for="">Apellido Materno:</label>
-              <input type="text" class="form-control" name="textApellidoMat" required value="<?php echo $textApellidoMat; ?>" placeholder="" id="textApellidoMat" require="">
+              <input type="text" class="form-control <?php echo (isset($error["textApellidoMat"]))?"is-invalid":"";?>" name="textApellidoMat"  value="<?php echo $textApellidoMat; ?>" placeholder="" id="textApellidoMat" require="">
+              <div class="invalid-feedback">
+                <?php echo (isset($error["textApellidoMat"]))?$error["textApellidoMat"]:"";?>
+              </div>
               <br>
               </div>
 
               <div class="form-group col-md-12">
               <label for="">Correo:</label>
-              <input type="email" class="form-control" name="textCorreo" required value="<?php echo $textCorreo; ?>" placeholder="" id="textCorreo" require="">
+              <input type="email" class="form-control <?php echo (isset($error["textCorreo"]))?"is-invalid":"";?>" name="textCorreo" required value="<?php echo $textCorreo; ?>" placeholder="" id="textCorreo" require="">
+              <div class="invalid-feedback">
+                <?php echo (isset($error["textCorreo"]))?$error["textCorreo"]:"";?>
+              </div>
               <br>
               </div>
 
