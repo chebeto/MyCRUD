@@ -204,7 +204,7 @@ switch ($accion){
               <br>
 
               <label for="">Imagen:</label>
-              <?php if ($textIMG!=""){}?>
+              <?php if ($textIMG!=""){?>
               <br>
               <img class="img-thumbnail rounded mx-auto d-block" width="100px" src="../imgs/<?php echo $textIMG; ?>"/>
               <br>
