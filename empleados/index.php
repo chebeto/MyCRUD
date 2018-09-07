@@ -237,7 +237,7 @@ switch ($accion){
     <div class="row">
       <table class="table">
         <thead>
-          <tr>
+          <tr >
             <th>Fotografia</th>
             <th>Nombre Completo</th>
             <th>Correo</th>
