@@ -10,6 +10,10 @@
 
       $accion=(isset($_POST["accion"]))?$_POST["accion"]:"";
 
+      $accionAgregar="";
+      $accionModificar=$accionEliminar=$accionCancelar="disabled";
+      $mostrarModal=false;
+
 include ("../conexion/conexion.php");
 
 switch ($accion){
@@ -73,7 +77,9 @@ switch ($accion){
           */
         if (isset($empleados["Fotografia"])) {
           if (file_exists("../imgs/".$empleados["Fotografia"])) {
-            unlink("../imgs/".$empleados["Fotografia"]);
+            if ($item["Fotografia"]!="user.png") {
+              unlink("../imgs/".$empleados["Fotografia"]);
+            }
           }
         }
         /*
@@ -101,7 +107,7 @@ switch ($accion){
           /*
           Realiza el borrado del archivo dentro de la carpeta de IMGS
           */
-        if (isset($empleados["Fotografia"])) {
+        if (isset($empleados["Fotografia"])&&($item["Fotografia"]!="user.png")) {
           if (file_exists("../imgs/".$empleados["Fotografia"])) {
             unlink("../imgs/".$empleados["Fotografia"]);
           }
@@ -112,12 +118,27 @@ switch ($accion){
         $sentencia->execute();
         header("Location: index.php");
 
-
     break;
 
   case 'btnCancelar':
-      echo $textID;
-      echo "Presionaste Cancelar";
+      header("Location: index.php");
+    break;
+
+  case "Seleccionar":
+      $accionAgregar="disabled";
+      $accionModificar=$accionEliminar=$accionCancelar="";
+      $mostrarModal=true;
+
+      $sentencia = $conn->prepare ("SELECT * FROM empleados WHERE Id=:Id");
+      $sentencia->bindParam(":Id",$textID);
+      $sentencia->execute();
+      $empleados=$sentencia->fetch(PDO::FETCH_LAZY);
+
+      $textNombre=$empleados["Nombre"];
+      $textApellidoPat=$empleados["ApellidoPat"];
+      $textApellidoMat=$empleados["ApellidoMat"];
+      $textCorreo=$empleados["Correo"];
+      $textImg=$empleados["Fotografia"];
     break;
 }
 
@@ -183,20 +204,27 @@ switch ($accion){
               <br>
 
               <label for="">Imagen:</label>
+              <?php if ($textIMG!=""){}?>
+              <br>
+              <img class="img-thumbnail rounded mx-auto d-block" width="100px" src="../imgs/<?php echo $textIMG; ?>"/>
+              <br>
+              <?php }?>
+
+
               <input type="file" class="form-control" accept="image/*" class="form-control-file" name="textIMG" value="<?php echo $textIMG; ?>" placeholder="" id="textIMG" require="">
               <br>
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-success" value="btnAgregar" type="submit" name="accion">Agregar</button>
-            <button class="btn btn-warning" value="btnEditar" type="submit" name="accion">Editar</button>
-            <button class="btn btn-danger" value="btnEliminar" type="submit" name="accion">Eliminar</button>
-            <button class="btn btn-primary" value="btnCancelar" type="submit" name="accion">Cancelar</button>
+            <button class="btn btn-success" <?php echo $accionAgregar ?> value="btnAgregar" type="submit" name="accion">Agregar</button>
+            <button class="btn btn-warning" <?php echo $accionModificar ?> value="btnEditar" type="submit" name="accion">Editar</button>
+            <button class="btn btn-danger" <?php echo $accionEliminar ?> value="btnEliminar" type="submit" name="accion">Eliminar</button>
+            <button class="btn btn-primary" <?php echo $accionCancelar ?> value="btnCancelar" type="submit" name="accion">Cancelar</button>
           </div>
         </div>
       </div>
     </div>
-
+    <br>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Agregar empleados +
@@ -225,13 +253,6 @@ switch ($accion){
             <td>
               <form action="" method="post">
                 <input type="hidden" name="textID" value="<?php echo $empleados["ID"]; ?>">
-                <input type="hidden" name="textNombre" value="<?php echo $empleados["Nombre"]; ?>">
-                <input type="hidden" name="textApellidoPat" value="<?php echo $empleados["ApellidoPat"]; ?>">
-                <input type="hidden" name="textApellidoMat" value="<?php echo $empleados["ApellidoMat"]; ?>">
-                <input type="hidden" name="textCorreo" value="<?php echo $empleados["Correo"]; ?>">
-                <input type="hidden" name="textIMG" value="<?php echo $empleados["Fotografia"]; ?>">
-
-
                 <input type="submit"  value="Seleccionar" name="accion" class="btn btn-outline-primary">
                 <button class="btn btn-outline-danger" value="btnEliminar" type="submit" name="accion">Eliminar</button>
               </form>
@@ -241,7 +262,11 @@ switch ($accion){
         } ?>
       </table>
     </div>
-
+  <?php if ($mostrarModal) {?>
+    <script>
+      $("#exampleModal").modal("show");
+    </script>
+  <?php }?>
 
   </div>
 </body>
