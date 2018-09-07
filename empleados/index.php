@@ -225,7 +225,7 @@ switch ($accion){
       </div>
     </div>
     <br>
-    <!-- Button trigger modal -->
+    <!-- Button trigger modal activar/desac -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Agregar empleados +
     </button>
