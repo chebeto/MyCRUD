@@ -123,14 +123,7 @@ switch ($accion){
         $sentencia->execute();
         $empleados=$sentencia->fetch(PDO::FETCH_LAZY);
         print_r($empleados);
-          /*
-          Realiza el borrado del archivo dentro de la carpeta de IMGS
-          */
-        if (isset($empleados["Fotografia"])&&($item["Fotografia"]!="user.png")) {
-          if (file_exists("../imgs/".$empleados["Fotografia"])) {
-            unlink("../imgs/".$empleados["Fotografia"]);
-          }
-        }
+
 
         $sentencia = $conn->prepare ("DELETE FROM empleados WHERE Id=:Id");
         $sentencia->bindParam(":Id",$textID);
